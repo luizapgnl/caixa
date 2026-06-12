@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autoatendimento - CASA DO PRODUTOR - PETSHOP </title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'purple-main': '#6366f1',
+                        'orange-accent': '#f97316',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="style/style.css">
+</head>
+<body class="h-screen w-screen overflow-hidden flex flex-col justify-between bg-gray-50 text-gray-800">
+
+    <header class="bg-indigo-600 text-white p-6 shadow-md flex justify-between items-center">
+        <div class="flex items-center gap-3">
+            <i data-lucide="dog" class="w-10 h-10 text-orange-accent animate-bounce"></i>
+            <h1 class="text-3xl font-bold tracking-wide">PETSHOP <span class="text-orange-accent">CASA DO PRODUTOR</span></h1>
+        </div>
+        <div id="header-info" class="text-right text-lg font-medium hidden">
+            <span id="cpf-header" class="bg-indigo-800 px-4 py-2 rounded-full text-sm"></span>
+        </div>
+    </header>
+
+    <main class="flex-1 flex items-center justify-center p-6 max-w-7xl w-full mx-auto overflow-y-auto">
+        
+        <div id="step-1" class="step-container w-full max-w-2xl bg-white rounded-3xl shadow-2xl p-10 text-center">
+            <i data-lucide="file-text" class="w-20 h-20 text-indigo-600 mx-auto mb-6"></i>
+            <h2 class="text-3xl font-bold text-gray-800 mb-2">CPF na Nota?</h2>
+            <p class="text-gray-500 mb-8 text-lg">Informe se deseja incluir o CPF no seu cupom fiscal.</p>
+            
+            <div class="flex justify-center gap-6 mb-8">
+                <button onclick="selectCpfOption(true)" id="btn-cpf-sim" class="flex-1 py-4 text-xl font-bold rounded-2xl border-2 border-indigo-600 text-indigo-600 hover:bg-indigo-50 transition-all flex items-center justify-center gap-2">
+                    <i data-lucide="check-circle"></i> Sim, quero
+                </button>
+                <button onclick="selectCpfOption(false)" id="btn-cpf-nao" class="flex-1 py-4 text-xl font-bold rounded-2xl border-2 border-gray-300 text-gray-500 hover:bg-gray-50 transition-all flex items-center justify-center gap-2">
+                    <i data-lucide="x-circle"></i> Não, obrigado
+                </button>
+            </div>
+
+            <div id="cpf-input-container" class="hidden mb-8">
+                <input type="text" id="cpf-field" maxlength="14" placeholder="Digite seu CPF (000.000.000-00)" 
+                    class="w-full text-center text-2xl p-4 border-2 border-indigo-300 rounded-2xl focus:outline-none focus:border-indigo-600 font-semibold tracking-wider text-gray-700">
+            </div>
+
+            <button onclick="goToStep2()" class="w-full bg-orange-accent hover:bg-orange-600 text-white text-2xl font-bold py-5 rounded-2xl shadow-lg transition-all flex items-center justify-center gap-3">
+                Continuar <i data-lucide="arrow-right" class="w-6 h-6"></i>
+            </button>
+        </div>
+
+        <div id="step-2" class="step-container hidden w-full flex flex-col gap-6 h-full items-start">
+            
+            <div class="w-full bg-white rounded-2xl shadow-sm border border-gray-200 p-2 flex flex-wrap items-center justify-between gap-2 text-sm font-medium text-gray-600">
+                <div class="flex flex-wrap items-center gap-1">
+                    <button class="flex items-center gap-2 px-3 py-2 rounded-xl bg-gray-100 text-gray-900 font-semibold"><i data-lucide="menu" class="w-4 h-4"></i> Todas as Categorias</button>
+                    <button class="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-gray-50"><i data-lucide="dog" class="w-4 h-4 text-gray-500"></i> Cães</button>
+                    <button class="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-gray-50"><i data-lucide="cat" class="w-4 h-4 text-gray-500"></i> Gatos</button>
+                    <button class="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-gray-50"><i data-lucide="twitter" class="w-4 h-4 text-gray-500"></i> Aves</button>
+                    <button class="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-gray-50"><i data-lucide="rabbit" class="w-4 h-4 text-gray-500"></i> Outros Pets</button>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button class="flex items-center gap-2 px-4 py-2 rounded-xl bg-cyan-50 text-cyan-700 border border-cyan-100 font-semibold"><i data-lucide="pill" class="w-4 h-4"></i> Farmácia</button>
+                    <button class="flex items-center gap-2 px-4 py-2 rounded-xl bg-purple-600 text-white font-semibold shadow-sm"><i data-lucide="percent" class="w-4 h-4"></i> Ofertas</button>
+                    <button class="flex items-center gap-2 px-3 py-2 rounded-xl text-orange-600 font-semibold"><i data-lucide="paw-print" class="w-4 h-4"></i> Produtos CP</button>
+                </div>
+            </div>
+
+            <div class="w-full grid grid-cols-1 lg:grid-cols-3 gap-6 flex-1 items-start">
+                
+                <div class="lg:col-span-1 bg-white rounded-3xl shadow-xl p-6 border border-gray-100 flex flex-col justify-between min-h-[550px]">
+                    <div>
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2">
+                                <i data-lucide="barcode" class="text-indigo-600"></i> Registrar Produto
+                            </h2>
+                            <button onclick="toggleModal(true)" class="bg-orange-50 text-orange-600 text-xs font-bold px-3 py-1.5 rounded-xl border border-orange-200 hover:bg-orange-100 transition-all flex items-center gap-1">
+                                <i data-lucide="table-properties" class="w-3.5 h-3.5"></i> Ver Tabela de Códigos
+                            </button>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="block text-xs font-semibold text-gray-500 mb-1">DIGITE O CÓDIGO DO PRODUTO (100 a 620)</label>
+                            <input type="number" id="product-code" placeholder="Digite o código" 
+                                class="w-full text-center text-2xl p-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-indigo-600 font-bold">
+                        </div>
+
+                        <div class="grid grid-cols-3 gap-2 mb-4">
+                            <button onclick="pressKey(1)" class="p-4 bg-gray-100 font-bold text-xl rounded-xl active:bg-gray-200">1</button>
+                            <button onclick="pressKey(2)" class="p-4 bg-gray-100 font-bold text-xl rounded-xl active:bg-gray-200">2</button>
+                            <button onclick="pressKey(3)" class="p-4 bg-gray-100 font-bold text-xl rounded-xl active:bg-gray-200">3</button>
+                            <button onclick="pressKey(4)" class="p-4 bg-gray-100 font-bold text-xl rounded-xl active:bg-gray-200">4</button>
+                            <button onclick="pressKey(5)" class="p-4 bg-gray-100 font-bold text-xl rounded-xl active:bg-gray-200">5</button>
+                            <button onclick="pressKey(6)" class="p-4 bg-gray-100 font-bold text-xl rounded-xl active:bg-gray-200">6</button>
+                            <button onclick="pressKey(7)" class="p-4 bg-gray-100 font-bold text-xl rounded-xl active:bg-gray-200">7</button>
+                            <button onclick="pressKey(8)" class="p-4 bg-gray-100 font-bold text-xl rounded-xl active:bg-gray-200">8</button>
+                            <button onclick="pressKey(9)" class="p-4 bg-gray-100 font-bold text-xl rounded-xl active:bg-gray-200">9</button>
+                            <button onclick="clearKey()" class="bg-red-100 text-red-600 text-base font-bold p-4 rounded-xl active:bg-red-200">Limpar</button>
+                            <button onclick="pressKey(0)" class="p-4 bg-gray-100 font-bold text-xl rounded-xl active:bg-gray-200">0</button>
+                            <button onclick="addProductFromInput()" class="bg-green-100 text-green-600 text-lg font-bold p-4 rounded-xl active:bg-green-200">Ok</button>
+                        </div>
+
+                        <div class="bg-indigo-50 p-3 rounded-xl border border-indigo-100 text-xs text-indigo-700">
+                            💡 Abra a <strong>Tabela de Códigos</strong> acima para consultar os códigos das abas!
+                        </div>
+                    </div>
+
+                    <button onclick="goToStep3()" id="btn-ir-pagamento" disabled class="w-full bg-gray-300 text-gray-500 text-xl font-bold py-4 rounded-2xl cursor-not-allowed transition-all mt-4 flex items-center justify-center gap-2">
+                        Ir para o Pagamento <i data-lucide="credit-card"></i>
+                    </button>
+                </div>
+
+                <div class="lg:col-span-2 bg-white rounded-3xl shadow-xl p-6 border border-gray-100 flex flex-col justify-between min-h-[550px]">
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center justify-between">
+                            <span class="flex items-center gap-2"><i data-lucide="shopping-cart" class="text-indigo-600"></i> Seu Carrinho</span>
+                            <span id="cart-count" class="bg-orange-accent text-white text-sm px-3 py-1 rounded-full font-bold">0 itens</span>
+                        </h2>
+                        
+                        <div id="cart-items" class="max-h-[280px] overflow-y-auto space-y-3 pr-2 mb-4">
+                            <div id="empty-cart-msg" class="text-center py-12 text-gray-400">
+                                <i data-lucide="shopping-bag" class="w-16 h-16 mx-auto mb-2 opacity-50"></i>
+                                <p class="text-lg">Insira os códigos dos produtos para começar.</p>
+                            </div>
+                        </div>
+
+                        <div id="coupon-area" class="bg-gray-50 p-4 rounded-2xl border border-gray-200 flex items-center justify-between gap-3 mt-2">
+                            <div class="flex items-center gap-2 text-gray-600">
+                                <i data-lucide="ticket" class="text-indigo-600"></i>
+                                <span class="text-sm font-semibold">Tem um Cupom?</span>
+                            </div>
+                            <div class="flex gap-2 flex-1 max-w-xs">
+                                <input type="text" id="coupon-input" placeholder="Ex: PET10" class="w-full uppercase text-center font-bold p-2 border border-gray-300 rounded-xl focus:outline-none focus:border-indigo-600 text-sm">
+                                <button onclick="applyCoupon()" class="bg-indigo-600 hover:bg-indigo-800 text-white font-bold px-4 py-2 rounded-xl text-sm transition-all">Aplicar</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border-t-2 border-gray-100 pt-4 mt-4">
+                        <div class="flex justify-between text-gray-600 text-base mb-1">
+                            <span>Subtotal</span>
+                            <span id="subtotal-val">R$ 0,00</span>
+                        </div>
+                        <div id="discount-row" class="flex justify-between text-green-600 text-base mb-1 hidden">
+                            <span>Desconto de 10% (Cupom)</span>
+                            <span id="discount-val">- R$ 0,00</span>
+                        </div>
+                        <div class="flex justify-between text-gray-800 text-3xl font-extrabold pt-2 border-t border-gray-50">
+                            <span>Total</span>
+                            <span class="text-indigo-600" id="total-val">R$ 0,00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="step-3" class="step-container hidden w-full max-w-6xl bg-white rounded-3xl shadow-2xl p-8 border border-gray-100">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-2">Escolha a Forma de Pagamento</h2>
+            <p class="text-center text-gray-500 mb-8 text-lg">Total a pagar: <span class="text-indigo-600 font-extrabold text-2xl" id="pay-total-val">R$ 0,00</span></p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <button onclick="selectPaymentMethod('pix')" class="p-6 rounded-2xl border-2 border-teal-100 bg-teal-50/30 text-left relative overflow-hidden transition-all hover:border-teal-400">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="bg-teal-500 text-white p-3 rounded-2xl shadow-md"><i data-lucide="qr-code"></i></div>
+                        <span class="text-xs font-bold text-teal-600 bg-teal-100 px-2 py-1 rounded-md tracking-wider">IMEDIATO</span>
+                    </div>
+                    <h3 class="text-3xl font-bold text-gray-800 mb-2">PIX</h3>
+                    <p class="text-sm text-gray-500">Gere o QR Code dinâmico na hora</p>
+                </button>
+
+                <button onclick="selectPaymentMethod('credito')" class="p-6 rounded-2xl border-2 border-purple-100 bg-purple-50/30 text-left relative overflow-hidden transition-all hover:border-purple-400">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="bg-purple-600 text-white p-3 rounded-2xl shadow-md"><i data-lucide="credit-card"></i></div>
+                        <span class="text-xs font-bold text-purple-600 bg-purple-100 px-2 py-1 rounded-md tracking-wider">ATÉ 5X</span>
+                    </div>
+                    <h3 class="text-3xl font-bold text-gray-800 mb-2">Crédito</h3>
+                    <p class="text-sm text-gray-500">Parcele suas compras em até 5x</p>
+                </button>
+
+                <button onclick="selectPaymentMethod('debito')" class="p-6 rounded-2xl border-2 border-orange-100 bg-orange-50/30 text-left relative overflow-hidden transition-all hover:border-orange-400">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="bg-orange-accent text-white p-3 rounded-2xl shadow-md"><i data-lucide="wallet"></i></div>
+                        <span class="text-xs font-bold text-orange-600 bg-orange-100 px-2 py-1 rounded-md tracking-wider">À VISTA</span>
+                    </div>
+                    <h3 class="text-3xl font-bold text-gray-800 mb-2">Débito</h3>
+                    <p class="text-sm text-gray-500">Desconto e agilidade no processamento</p>
+                </button>
+            </div>
+
+            <div id="payment-details-box" class="hidden border-2 border-dashed border-gray-200 rounded-3xl p-6 bg-gray-50 text-center">
+                <div id="pay-details-pix" class="hidden">
+                    <div class="bg-white p-4 inline-block rounded-2xl shadow-md mb-4 border border-gray-100">
+                        <img id="pix-qrcode" src="" alt="QR Code Pix" class="mx-auto w-[180px] h-[180px]">
+                    </div>
+                    <p class="text-gray-600 font-medium mb-2 flex items-center justify-center gap-2 text-lg">
+                        <i data-lucide="loader" class="animate-spin text-teal-500"></i> Aguardando confirmação do pagamento...
+                    </p>
+                </div>
+
+                <div id="pay-details-credito" class="hidden">
+                    <p class="text-gray-700 font-bold mb-4 text-lg">Selecione as Parcelas (Até 5x):</p>
+                    <div id="installments-grid" class="grid grid-cols-1 sm:grid-cols-5 gap-3 mb-6"></div>
+                    <div class="bg-indigo-600 text-white p-4 rounded-xl inline-flex items-center gap-3 text-xl font-bold px-8">
+                        <i data-lucide="smartphone"></i> Insira ou Aproxime o Cartão
+                    </div>
+                </div>
+
+                <div id="pay-details-debito" class="hidden">
+                    <div class="bg-orange-accent text-white p-4 rounded-xl inline-flex items-center gap-3 text-xl font-bold px-8 mt-4">
+                        <i data-lucide="smartphone"></i> Insira ou Aproxime o Cartão de Débito
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8 flex justify-between items-center">
+                <button onclick="changeStep(3, 2)" class="text-gray-500 hover:text-gray-700 font-bold flex items-center gap-2 text-lg">
+                    <i data-lucide="arrow-left"></i> Voltar para as compras
+                </button>
+            </div>
+        </div>
+
+        <div id="step-4" class="step-container hidden w-full max-w-xl bg-white rounded-3xl shadow-2xl p-12 text-center border border-gray-100">
+            <div class="w-24 h-24 bg-green-100 text-green-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-inner">
+                <i data-lucide="party-popper" class="w-14 h-14"></i>
+            </div>
+            <h2 class="text-4xl font-extrabold text-gray-800 mb-1">Pagamento Realizado!</h2>
+            <p class="text-xl text-indigo-600 font-semibold mb-4">Sua nota fiscal foi emitida.</p>
+            
+            <div class="bg-amber-50 border-2 border-dashed border-amber-300 rounded-2xl p-4 mb-6 flex items-center gap-4 text-left">
+                <div class="bg-amber-500 text-white p-3 rounded-xl shadow-md"><i data-lucide="coins" class="w-8 h-8"></i></div>
+                <div>
+                    <h4 class="font-bold text-amber-800 text-lg">Você ganhou Cashback! 🤑</h4>
+                    <p class="text-sm text-amber-700 font-medium">Parabéns! R$ <span id="cashback-val" class="font-bold text-base">0,00</span> (5%) foram gerados para a sua próxima compra!</p>
+                </div>
+            </div>
+            
+            <div class="bg-gray-50 p-4 rounded-2xl border border-gray-200 text-left mb-8 space-y-2 text-sm text-gray-600">
+                <p class="flex justify-between"><span class="font-medium">Estabelecimento:</span> <span>CASA DO PRODUTOR - PETSHOP</span></p>
+                <p class="flex justify-between"><span class="font-medium">CPF na nota:</span> <span id="success-cpf-view">Não informado</span></p>
+                <p class="flex justify-between font-bold text-gray-800 text-base pt-2 border-t border-gray-200"><span>Total Pago:</span> <span id="success-total-view">R$ 0,00</span></p>
+            </div>
+
+            <h3 class="text-2xl font-bold text-orange-accent mb-8 tracking-wide animate-bounce">Volte Sempre! 🐶🐱</h3>
+
+            <button onclick="resetSystem()" class="w-full bg-indigo-600 hover:bg-indigo-800 text-white text-xl font-bold py-4 rounded-2xl shadow-lg transition-all">
+                Iniciar Novo Atendimento
+            </button>
+        </div>
+
+    </main>
+
+    <div id="codes-modal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-4xl w-full max-h-[85vh] flex flex-col p-6 shadow-2xl">
+            <div class="flex justify-between items-center border-b pb-3 mb-4">
+                <h3 class="text-2xl font-bold text-gray-800 flex items-center gap-2">
+                    <i data-lucide="table" class="text-indigo-600"></i> Tabela de Referência de Códigos
+                </h3>
+                <button onclick="toggleModal(false)" class="p-2 hover:bg-gray-100 rounded-full text-gray-500"><i data-lucide="x"></i></button>
+            </div>
+            
+            <div class="flex-1 overflow-y-auto space-y-6 pr-2" id="modal-tables-container">
+                </div>
+            
+            <div class="mt-4 pt-3 border-t text-right">
+                <button onclick="toggleModal(false)" class="bg-indigo-600 text-white font-bold px-6 py-2 rounded-xl hover:bg-indigo-700 transition-all">Fechar Guia</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-gray-100 border-t border-gray-200 p-4 text-center text-gray-500 flex justify-between items-center px-8">
+        <span class="text-sm">Precisa de ajuda? Chame um funcionário.</span>
+        <button onclick="alert('Um funcionário do Petshop foi chamado!')" class="bg-orange-accent text-white px-4 py-2 rounded-xl text-sm font-bold shadow hover:bg-orange-600 flex items-center gap-1">
+            <i data-lucide="help-circle" class="w-4 h-4"></i> Chamar Atendente
+        </button>
+    </footer>
+
+    <script>
+        // BANCO DE DADOS ATUALIZADO COM 20 PRODUTOS REAIS POR ABA (Total: 120 Itens)
+        const PRODUCTS_DB = {
+            // ================= CAES (100 - 119) =================
+            100: { name: "Ração PremieR Cães Adultos 15kg", price: 249.90, desc: "Frango e Arroz da Linha Golden" },
+            101: { name: "Ração Royal Canin Size Dog 1kg", price: 64.90, desc: "Para cães Mini Adultos" },
+            102: { name: "Petisco Doguitos Bifinho Carne 65g", price: 7.20, desc: "Snack saboroso de carne grelhada" },
+            103: { name: "Brinquedo Mordedor Osso de Borracha", price: 18.90, desc: "Borracha maciça de alta durabilidade" },
+            104: { name: "Shampoo Pet Estética Neutro 500ml", price: 24.99, desc: "Fragrância suave hipoalergênica" },
+            105: { name: "Antipulgas NexGard 10 a 25kg", price: 92.50, desc: "1 Tablete mastigável proteção 30 dias" },
+            106: { name: "Coleira Antipulgas Seresto Grande", price: 219.00, desc: "Até 8 meses de proteção contínua" },
+            107: { name: "Cama Pet Almofadada Premium G", price: 139.90, desc: "Lavável com fundo impermeável" },
+            108: { name: "Guia Retrátil para Cães até 15kg", price: 45.00, desc: "Corda de 3 metros com trava rápida" },
+            109: { name: "Tapete Higiênico SuperSeco 30 un", price: 59.90, desc: "Alta absorção com atrativo canino" },
+            110: { name: "Comedouro Inox Antiderrapante 400ml", price: 29.90, desc: "Fácil higienização e não enferruja" },
+            111: { name: "Ração Úmida Pedigree Sachê Carne", price: 3.80, desc: "Pedaços ao molho para cães mini" },
+            112: { name: "Ossinho Palito Mastigável Flex 100g", price: 12.50, desc: "Auxilia no controle do tártaro" },
+            113: { name: "Snack Premier Cookie Inteiro 250g", price: 19.90, desc: "Com ingredientes naturais selecionados" },
+            114: { name: "Peitoral Americano com Guia M", price: 54.90, desc: "Fitas reguláveis ultra resistentes" },
+            115: { name: "Educador Sanitário Pipi Pode 20ml", price: 15.40, desc: "Auxilia no adestramento do lugar certo" },
+            116: { name: "Cortador de Unha Pet Tipo Alicate", price: 22.00, desc: "Lâminas de aço inox com trava" },
+            117: { name: "Rasqueadeira de Pelos Cabo Emborrachado", price: 26.50, desc: "Remove nós e pelos mortos" },
+            118: { name: "Ração N&D Prime Cães Filhotes 2kg", price: 119.90, desc: "Livre de transgênicos e grãos" },
+            119: { name: "Petisco Natural de Orelha de Porco", price: 9.90, desc: "Desidratado e 100% digestível" },
+
+            // ================= GATOS (200 - 219) =================
+            200: { name: "Sachê Whiskas Gatos Carne 85g", price: 4.50, desc: "Para gatos adultos castrados" },
+            201: { name: "Arranhador para Gatos Torre Classic", price: 89.90, desc: "Com plataforma macia de descanso" },
+            202: { name: "Areia Sanitária Pipicat Odor Control 4kg", price: 19.90, desc: "Forma torrões firmes facilmente" },
+            203: { name: "Ração GranPlus Gatos Castrados 3kg", price: 79.90, desc: "Sabor Salmão e Arroz Light" },
+            204: { name: "Brinquedo Rato de Pelúcia com Catnip", price: 11.50, desc: "Estimula o instinto caçador" },
+            205: { name: "Ração Royal Canin Gatos Feline 400g", price: 42.00, desc: "Nutrição específica Hairball contra pelos" },
+            206: { name: "Fonte de Água Bivolt para Gatos 2L", price: 98.90, desc: "Estimula o consumo regular de água" },
+            207: { name: "Petisco Dreamies Queijo Gatos 40g", price: 7.50, desc: "Crocante por fora e macio por dentro" },
+            208: { name: "Caixa de Areia Aberta com Borda", price: 34.90, desc: "Evita o espalhamento de grãos" },
+            209: { name: "Pá Coletora de Areia Plástica PP", price: 5.50, desc: "Vazamentos perfeitos para limpeza" },
+            210: { name: "Maleta de Transporte Pet standard N1", price: 69.90, desc: "Porta com trava segura e ventilação" },
+            211: { name: "Sachê Fancy Feast Petits Filets 50g", price: 6.90, desc: "Gourmet sabor Atum delicioso" },
+            212: { name: "Petisco Whiskas Anti-Bola de Pelo", price: 8.20, desc: "Snacks funcionais crocantes" },
+            213: { name: "Erva de Gato Catnip Desidratada 10g", price: 13.90, desc: "Pura alegria para felinos exigentes" },
+            214: { name: "Comedouro Pesado de Cerâmica Gato", price: 39.00, desc: "Ergonômico elevado anti-refluxo" },
+            215: { name: "Coleira de Identificação com Guizo", price: 14.90, desc: "Fecho elástico anti-enforcamento" },
+            216: { name: "Ração Golden Gatos Filhotes Frango", price: 36.90, desc: "Embalagem de 1kg rica em taurina" },
+            217: { name: "Furminador Removedor de Pelos Gatos", price: 65.00, desc: "Reduz a queda em até 90%" },
+            218: { name: "Pasta de Malte para Gatos 70g", price: 49.90, desc: "Auxilia na evacuação das bolas de pelo" },
+            219: { name: "Arranhador Protetor de Sofá Lateral", price: 44.90, desc: "Encaixe universal sob o pé do sofá" },
+
+            // ================= AVES (300 - 319) =================
+            300: { name: "Mistura de Sementes Calopsita 500g", price: 12.80, desc: "Com girassol, painço e aveia descascada" },
+            301: { name: "Alimento Extrusado Alcon Canário 150g", price: 18.50, desc: "Nutrição completa com vitaminas" },
+            302: { name: "Gaiola Redonda Luxo para Canários", price: 115.00, desc: "Malha fina pintada com poleiros" },
+            303: { name: "Bebedouro Automático Aves Malha Fina", price: 4.50, desc: "Capacidade de 100ml em acrílico" },
+            304: { name: "Poleiro de Madeira Natural Médio", price: 8.90, desc: "Para desgaste correto das unhas" },
+            305: { name: "Osso de Siba Natural com Suporte", price: 7.90, desc: "Fonte essencial de cálcio para o bico" },
+            306: { name: "Banheira Plástica para Passarinhos Oval", price: 9.50, desc: "Encaixe universal em portas de gaiolas" },
+            307: { name: "Brinquedo Balanço de Madeira Colorido", price: 16.00, desc: "Tinta atóxica para distração diária" },
+            308: { name: "Farinhada com Ovos CC-Albium 500g", price: 24.90, desc: "Suplemento proteico para época de muda" },
+            309: { name: "Ninho de Fibra Natural para Bicudo", price: 14.50, desc: "Formato taça para reprodução segura" },
+            310: { name: "Comedouro Interno com Grade de Ferro", price: 6.80, desc: "Evita o desperdício excessivo de grãos" },
+            311: { name: "Vitaminas em Gotas Avitrin Sulfa 15ml", price: 19.80, desc: "Tratamento eficaz contra coccidiose" },
+            312: { name: "Suplemento Avitrin Canto Gotas 15ml", price: 17.50, desc: "Estimulante para canto e vigor" },
+            313: { name: "Argolas de Acrílico Interativas Calopsita", price: 13.90, desc: "Brinquedo de roer e escalar" },
+            314: { name: "Mistura Premium para Papagaio Nutrópica", price: 54.00, desc: "Grãos e frutas desidratadas 1kg" },
+            315: { name: "Areia Sanitária Higiênica Fundo Gaiola", price: 11.50, desc: "Pacote de 1kg para controle sanitário" },
+            316: { name: "Espelho Redondo com Poleiro Plástico", price: 7.20, desc: "Estimula a interação de aves solitárias" },
+            317: { name: "Suporte de Metal para Frutas e Verduras", price: 8.50, desc: "Pendura alimentos frescos com higiene" },
+            318: { name: "Sementes de Painço Amarelo Puro 500g", price: 9.90, desc: "Grão limpo e selecionado tipo exportação" },
+            319: { name: "Gaiola Criadeira para Periquitos Epóxi", price: 89.90, desc: "Divisória removível de arame" },
+
+            // ================= OUTROS PETS (400 - 419) =================
+            400: { name: "Ração Nutrópica para Hamster 300g", price: 34.90, desc: "Alimento completo com grãos integrais" },
+            401: { name: "Feno de Alfafa Seco Premium 500g", price: 21.50, desc: "Essencial para coelhos e porquinhos-da-índia" },
+            402: { name: "Gaiola para Hamster de 3 Andares Tubos", price: 165.00, desc: "Inclui rodinha e tubos plásticos externos" },
+            403: { name: "Rodinha de Exercício Silenciosa 15cm", price: 29.90, desc: "Rolamento macio que não faz barulho" },
+            404: { name: "Serragem de Pinus Higiênica Prensada", price: 8.50, desc: "Pacote 1kg com alto poder de absorção" },
+            405: { name: "Ração Alcon Alho para Peixes 50g", price: 22.90, desc: "Flocos que aumentam imunidade do aquário" },
+            406: { name: "Ração Poytara Jabuti Adulto 300g", price: 46.00, desc: "Nutrição balanceada para répteis terrestres" },
+            407: { name: "Bebedouro de Bilha para Roedores 250ml", price: 16.90, desc: "Bico de alumínio anti-vazamento" },
+            408: { name: "Toca de Madeira Natural para Chinchila", price: 38.00, desc: "Espaço escuro ideal para repouso" },
+            409: { name: "Condicionador Aquasafe Tetra 100ml", price: 49.90, desc: "Remove cloro e metais pesados da água" },
+            410: { name: "Ração Extrusada Funny Bunny Coelhos 1kg", price: 18.90, desc: "Rica em fibras verdes e minerais" },
+            411: { name: "Bloco de Cálcio formato Cenoura Roer", price: 6.50, desc: "Desgasta os dentes de crescimento contínuo" },
+            412: { name: "Substrato Areia de Quartzo Aquário 5kg", price: 27.00, desc: "Grânulos finos ideais para plantas e peixes" },
+            413: { name: "Termostato com Aquecedor Automático 50W", price: 74.90, desc: "Mantém a temperatura estável no aquário" },
+            414: { name: "Globo de Acrílico para Hamster Passear", price: 32.00, desc: "Diâmetro de 12cm com travas de ventilação" },
+            415: { name: "Filtro Externo Hang-On Atman HF-100", price: 119.00, desc: "Filtragem química e mecânica silenciosa" },
+            416: { name: "Suplemento Vitamínico Roedores Labcon", price: 15.30, desc: "Frasco conta-gotas com complexo total" },
+            417: { name: "Ração em Bastão Funny Bunny Alcon", price: 12.90, desc: "Petisco pendurável para roer por dias" },
+            418: { name: "Peitoral com Guia Ajustável para Coelho", price: 24.90, desc: "Tecido antitranspirante e fecho rápido" },
+            419: { name: "Flocos Básicos TetraMin Peixes 20g", price: 21.00, desc: "Líder mundial em nutrição de tropicais" },
+
+            // ================= FARMACIA (500 - 519) =================
+            500: { name: "Colírio Provets Otológico/Ocular", price: 28.90, desc: "Tratamento de infecções bacterianas" },
+            501: { name: "Vermífugo Top Dog 10kg de 4 Comprimidos", price: 62.90, desc: "Amplo espectro para cães médios" },
+            502: { name: "Pomada Cicatrizante Vetaglós 20g", price: 33.50, desc: "Ação antibiótica e epitelizante rápida" },
+            503: { name: "Suplemento Organew Probiótico 100g", price: 26.90, desc: "Melhora a conversão alimentar e flora" },
+            504: { name: "Suplemento Glicopan Pet Gotas 30ml", price: 38.90, desc: "Rápida resposta na recuperação energética" },
+            505: { name: "Anti-inflamatório Maxicam Oral 0.5mg", price: 41.20, desc: "Meloxicam em comprimidos para pets" },
+            506: { name: "Limpador de Ouvidos Aurivet Gotas 13g", price: 79.90, desc: "Suspensão otológica com bico dosador" },
+            507: { name: "Spray Antisséptico Clorexivet 100ml", price: 24.50, desc: "Higienização dermatológica local" },
+            508: { name: "Shampoo Antifúngico Cetoconazol 2%", price: 54.00, desc: "Tratamento eficaz contra micoses" },
+            509: { name: "Suplemento Condroton Vetnil 60 un", price: 112.00, desc: "Regenerador articular para pets sênior" },
+            510: { name: "Suplemento Calcioral B12 Líquido 200ml", price: 29.90, desc: "Cálcio e fósforo para filhotes em crescimento" },
+            511: { name: "Protetor Solar para Pets Vetnil 30g", price: 45.00, desc: "Proteção UV para focinhos e orelhas claras" },
+            512: { name: "Calmante Natural Passiflora Vet 30ml", price: 36.50, desc: "Reduz estresse em viagens e fogos" },
+            513: { name: "Solução Otológica Limpa Orelhas 100ml", price: 21.90, desc: "Uso preventivo contra mau cheiro" },
+            514: { name: "Vermífugo Chemital Gatos 2 Comprimidos", price: 19.90, desc: "Específico para eliminação de vermes chatos" },
+            515: { name: "Antibiótico Synulox Pfizer 50mg", price: 82.90, desc: "À base de amoxicilina e clavulanato" },
+            516: { name: "Analgésico Dipirona Gotas Dopet 20ml", price: 14.90, desc: "Alívio rápido de dores e episódios febris" },
+            517: { name: "Pomada Otológica Natalene 25ml", price: 91.00, desc: "Tratamento completo para otites severas" },
+            518: { name: "Suplemento Hemolitan Gold Gotas 30ml", price: 58.90, desc: "Combate anemias e estimula apetite" },
+            519: { name: "Sabonete Sarnicida Matacura Neutro", price: 11.50, desc: "Combate piolhos, carrapatos e sarnas" },
+
+            // ================= OFERTAS (600 - 619) =================
+            600: { name: "Ração Golden Cães Adultos Frango 15kg", price: 169.00, desc: "Mega Oferta - Menor preço do ano" },
+            601: { name: "Areia Sanitária Kit 3x Pipicat 4kg", price: 49.90, desc: "Leve 3 Pague 2 - Desconto progressivo" },
+            602: { name: "Comedouro Duplo Regulável com Suporte", price: 59.90, desc: "Oferta - Altura ajustável ergonomia canina" },
+            603: { name: "Petisco Whiskas Sachê Leve 10 Pague 9", price: 39.90, desc: "Caixa Promocional Mix de Sabores" },
+            604: { name: "Tapete Higiênico Confort 50 unidades", price: 79.90, desc: "Queima de Estoque - Super Absorvente" },
+            605: { name: "Arranhador de Papelão Ondulado Simples", price: 15.00, desc: "Preço Promocional de Inauguração" },
+            606: { name: "Shampoo Pet 5L Uso Profissional Galão", price: 69.90, desc: "Super Econômico - Fragrância Melancia" },
+            607: { name: "Ração Special Dog Prime Premium 15kg", price: 159.00, desc: "Oferta exclusiva de autoatendimento" },
+            608: { name: "Cama Pet Quadrada Impermeável M", price: 64.90, desc: "50% de Desconto na segunda unidade" },
+            609: { name: "Snack Doguitos Palito Caixa Fechada", price: 32.50, desc: "Contém 10 pacotes prontos para consumo" },
+            610: { name: "Biscoito Dog Chow Sachê Saudável 500g", price: 14.90, desc: "Leve mais por menos - Integral" },
+            611: { name: "Eliminador de Odores Sanol Herbal 2L", price: 19.90, desc: "Promocional concentrado limpa e perfuma" },
+            612: { name: "Brinquedo Bolinha Cravo Com Guizo 3 un", price: 9.90, desc: "Kit com 3 unidades em cores sortidas" },
+            613: { name: "Guia Peitoral Regulável Estampa Divertida", price: 29.90, desc: "Liquidação de estoque coleções passadas" },
+            614: { name: "Petisco Cat Chow Sachê Gatos Frango", price: 3.10, desc: "Preço de Custo - Oferta Relâmpago" },
+            615: { name: "Vermífugo Endogard 30kg Caixa Individual", price: 44.90, desc: "Desconto Direto na tela de pagamento" },
+            616: { name: "Ração Úmida GranPlus Sachê Ovelha", price: 3.50, desc: "Compre 5 sachês por preço promocional" },
+            617: { name: "Escova Dupla para Pelos Cerda/Aço", price: 17.90, desc: "Desconto de 40% apenas hoje" },
+            618: { name: "Bebedouro Portátil Viagem Garrafa 500ml", price: 19.90, desc: "Ideal para passeios e caminhadas quentes" },
+            619: { name: "Petisco Bifinho Keldog Carne 500g", price: 27.90, desc: "Tamanho Família Econômico com Zíper" }
+        };
+
+        let cart = [];
+        let hasCpf = false;
+        let cpfValue = "";
+        let isDiscountApplied = false;
+
+        document.addEventListener("DOMContentLoaded", () => {
+            lucide.createIcons();
+            buildModalTables();
+        });
+
+        // MONTA AS TABELAS DO MODAL DINAMICAMENTE DIVIDIDO POR CATEGORIAS
+        function buildModalTables() {
+            const container = document.getElementById('modal-tables-container');
+            container.innerHTML = '';
+
+            const categories = [
+                { title: "🐶 CÃES (Códigos 100 a 119)", start: 100, end: 119 },
+                { title: "🐱 GATOS (Códigos 200 a 219)", start: 200, end: 219 },
+                { title: "🐦 AVES (Códigos 300 a 319)", start: 300, end: 319 },
+                { title: "🐹 OUTROS PETS (Códigos 400 a 419)", start: 400, end: 419 },
+                { title: "💊 FARMÁCIA (Códigos 500 a 519)", start: 500, end: 519 },
+                { title: "🏷️ OFERTAS EXCLUSIVAS (Códigos 600 a 619)", start: 600, end: 619 }
+            ];
+
+            categories.forEach(cat => {
+                const section = document.createElement('div');
+                section.className = "bg-gray-50 rounded-2xl p-4 border border-gray-200 shadow-sm";
+                
+                let tableHTML = `
+                    <h4 class="font-bold text-gray-700 text-lg mb-3 border-b pb-1 text-indigo-600">${cat.title}</h4>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm text-gray-500">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-100">
+                                <tr>
+                                    <th class="px-4 py-2 w-20 text-center">Código</th>
+                                    <th class="px-4 py-2">Produto</th>
+                                    <th class="px-4 py-2 w-24">Preço</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                `;
+
+                for(let i = cat.start; i <= cat.end; i++) {
+                    const prod = PRODUCTS_DB[i];
+                    if(prod) {
+                        tableHTML += `
+                            <tr class="bg-white border-b hover:bg-gray-50">
+                                <td class="px-4 py-2 text-center font-bold text-indigo-600 bg-indigo-50/50 rounded-md">${i}</td>
+                                <td class="px-4 py-2 font-medium text-gray-900">${prod.name} <br><span class="text-xs text-gray-400 font-normal">${prod.desc}</span></td>
+                                <td class="px-4 py-2 font-bold text-gray-800">R$ ${prod.price.toFixed(2)}</td>
+                            </tr>
+                        `;
+                    }
+                }
+
+                tableHTML += `</tbody></table></div>`;
+                section.innerHTML = tableHTML;
+                container.appendChild(section);
+            });
+        }
+
+        function toggleModal(show) {
+            const modal = document.getElementById('codes-modal');
+            if (show) {
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
+        }
+
+        function changeStep(from, to) {
+            document.getElementById(`step-${from}`).classList.add('hidden');
+            document.getElementById(`step-${to}`).classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function selectCpfOption(wantCpf) {
+            hasCpf = wantCpf;
+            const inputContainer = document.getElementById('cpf-input-container');
+            const btnSim = document.getElementById('btn-cpf-sim');
+            const btnNao = document.getElementById('btn-cpf-nao');
+
+            if (wantCpf) {
+                inputContainer.classList.remove('hidden');
+                btnSim.className = "flex-1 py-4 text-xl font-bold rounded-2xl bg-indigo-600 text-white border-2 border-indigo-600 transition-all flex items-center justify-center gap-2";
+                btnNao.className = "flex-1 py-4 text-xl font-bold rounded-2xl border-2 border-gray-300 text-gray-500 hover:bg-gray-50 transition-all flex items-center justify-center gap-2";
+                document.getElementById('cpf-field').focus();
+            } else {
+                inputContainer.classList.add('hidden');
+                btnNao.className = "flex-1 py-4 text-xl font-bold rounded-2xl bg-gray-500 text-white border-2 border-gray-500 transition-all flex items-center justify-center gap-2";
+                btnSim.className = "flex-1 py-4 text-xl font-bold rounded-2xl border-2 border-indigo-600 text-indigo-600 hover:bg-indigo-50 transition-all flex items-center justify-center gap-2";
+                document.getElementById('cpf-field').value = "";
+            }
+        }
+
+        document.getElementById('cpf-field').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, "");
+            if (value.length > 3) value = value.substring(0,3) + '.' + value.substring(3);
+            if (value.length > 7) value = value.substring(0,7) + '.' + value.substring(7);
+            if (value.length > 11) value = value.substring(0,11) + '-' + value.substring(11);
+            e.target.value = value;
+        });
+
+        function goToStep2() {
+            cpfValue = document.getElementById('cpf-field').value;
+            const headerInfo = document.getElementById('header-info');
+            const cpfHeader = document.getElementById('cpf-header');
+
+            if (hasCpf && cpfValue.length < 14) {
+                alert("Por favor, digite um CPF válido ou escolha 'Não, obrigado'.");
+                return;
+            }
+
+            cpfHeader.innerText = hasCpf ? `CPF: ${cpfValue}` : "Sem CPF na nota";
+            headerInfo.classList.remove('hidden');
+            changeStep(1, 2);
+        }
+
+        function pressKey(num) {
+            document.getElementById('product-code').value += num;
+        }
+
+        function clearKey() {
+            document.getElementById('product-code').value = "";
+        }
+
+        function addProductFromInput() {
+            const input = document.getElementById('product-code');
+            const code = parseInt(input.value.trim());
+            
+            if (!code) {
+                alert("Digite um código antes de apertar OK!");
+                return;
+            }
+
+            const product = PRODUCTS_DB[code];
+
+            if (product) {
+                addToCart(code, product);
+                input.value = "";
+            } else {
+                alert("Produto não encontrado! Consulte a tabela de códigos acima para ver opções entre 100 e 619.");
+                input.value = "";
+            }
+        }
+
+        function addToCart(code, productData) {
+            const existingItem = cart.find(item => item.id === code);
+            if (existingItem) {
+                existingItem.qty++;
+            } else {
+                cart.push({
+                    id: code,
+                    name: productData.name,
+                    price: productData.price,
+                    desc: productData.desc,
+                    qty: 1
+                });
+            }
+            renderCart();
+        }
+
+        function changeQty(code, amount) {
+            const item = cart.find(item => item.id === code);
+            if (item) {
+                item.qty += amount;
+                if (item.qty <= 0) cart = cart.filter(i => i.id !== code);
+                renderCart();
+            }
+        }
+
+        function applyCoupon() {
+            const input = document.getElementById('coupon-input').value.trim().toUpperCase();
+            if (cart.length === 0) {
+                alert("Adicione produtos no carrinho antes de aplicar o cupom!");
+                return;
+            }
+            if (input === "PET10") {
+                isDiscountApplied = true;
+                alert("Cupom PET10 aplicado com sucesso! 10% de desconto concedido.");
+                renderCart();
+            } else {
+                alert("Cupom inválido! Tente usar o código PET10.");
+            }
+        }
+
+        function renderCart() {
+            const itemsContainer = document.getElementById('cart-items');
+            const emptyMsg = document.getElementById('empty-cart-msg');
+            const btnPagamento = document.getElementById('btn-ir-pagamento');
+            
+            if (cart.length === 0) {
+                itemsContainer.innerHTML = `
+                    <div id="empty-cart-msg" class="text-center py-12 text-gray-400">
+                        <i data-lucide="shopping-bag" class="w-16 h-16 mx-auto mb-2 opacity-50"></i>
+                        <p class="text-lg">Insira os códigos dos produtos para começar.</p>
+                    </div>`;
+                btnPagamento.disabled = true;
+                btnPagamento.className = "w-full bg-gray-300 text-gray-500 text-xl font-bold py-4 rounded-2xl cursor-not-allowed transition-all mt-4 flex items-center justify-center gap-2";
+                isDiscountApplied = false;
+                document.getElementById('coupon-input').value = "";
+                updateTotals(0);
+                lucide.createIcons();
+                return;
+            }
+
+            if(emptyMsg) emptyMsg.remove();
+            itemsContainer.innerHTML = '';
+
+            let totalItems = 0;
+            let subtotalPrice = 0;
+
+            cart.forEach(item => {
+                totalItems += item.qty;
+                subtotalPrice += (item.price * item.qty);
+
+                const div = document.createElement('div');
+                div.className = "flex items-center justify-between bg-gray-50 p-4 rounded-2xl border border-gray-100";
+                div.innerHTML = `
+                    <div class="flex-1 pr-2">
+                        <span class="text-xs bg-indigo-100 text-indigo-700 px-2 py-0.5 font-bold rounded-md mb-1 inline-block">Cód: ${item.id}</span>
+                        <h4 class="font-bold text-gray-800 text-sm line-clamp-1">${item.name}</h4>
+                        <p class="text-xs text-gray-400 line-clamp-1 mb-1">${item.desc}</p>
+                        <span class="text-sm font-bold text-indigo-600">R$ ${item.price.toFixed(2)} un</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="flex items-center border border-gray-300 rounded-xl bg-white overflow-hidden shadow-sm">
+                            <button onclick="changeQty(${item.id}, -1)" class="px-3 py-1 bg-gray-50 hover:bg-gray-100 font-bold text-lg">-</button>
+                            <span class="px-3 font-bold text-gray-800">${item.qty}</span>
+                            <button onclick="changeQty(${item.id}, 1)" class="px-3 py-1 bg-gray-50 hover:bg-gray-100 font-bold text-lg">+</button>
+                        </div>
+                        <span class="text-lg font-extrabold text-gray-700 min-w-[85px] text-right">R$ ${(item.price * item.qty).toFixed(2)}</span>
+                    </div>
+                `;
+                itemsContainer.appendChild(div);
+            });
+
+            document.getElementById('cart-count').innerText = `${totalItems} itens`;
+            btnPagamento.disabled = false;
+            btnPagamento.className = "w-full bg-orange-accent hover:bg-orange-600 text-white text-xl font-bold py-4 rounded-2xl shadow-lg transition-all mt-4 flex items-center justify-center gap-2";
+            
+            updateTotals(subtotalPrice);
+        }
+
+        function updateTotals(subtotal) {
+            let discount = 0;
+            if (isDiscountApplied) {
+                discount = subtotal * 0.10;
+                document.getElementById('discount-row').classList.remove('hidden');
+                document.getElementById('discount-val').innerText = `- R$ ${discount.toFixed(2)}`;
+            } else {
+                document.getElementById('discount-row').classList.add('hidden');
+            }
+
+            let finalTotal = subtotal - discount;
+            let cashback = finalTotal * 0.05;
+
+            document.getElementById('subtotal-val').innerText = `R$ ${subtotal.toFixed(2)}`;
+            document.getElementById('total-val').innerText = `R$ ${finalTotal.toFixed(2)}`;
+            document.getElementById('pay-total-val').innerText = `R$ ${finalTotal.toFixed(2)}`;
+            document.getElementById('success-total-view').innerText = `R$ ${finalTotal.toFixed(2)}`;
+            document.getElementById('cashback-val').innerText = cashback.toFixed(2);
+        }
+
+        function goToStep3() {
+            changeStep(2, 3);
+            document.getElementById('payment-details-box').classList.add('hidden');
+        }
+
+        function selectPaymentMethod(method) {
+            const detailBox = document.getElementById('payment-details-box');
+            const pixDetails = document.getElementById('pay-details-pix');
+            const creditoDetails = document.getElementById('pay-details-credito');
+            const debitoDetails = document.getElementById('pay-details-debito');
+
+            pixDetails.classList.add('hidden');
+            creditoDetails.classList.add('hidden');
+            debitoDetails.classList.add('hidden');
+            detailBox.classList.remove('hidden');
+
+            let totalAtual = parseFloat(document.getElementById('total-val').innerText.replace("R$ ", "").replace(",", "."));
+
+            if (method === 'pix') {
+                pixDetails.classList.remove('hidden');
+                document.getElementById('pix-qrcode').src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=PixSimuladoVivaPetTotal${totalAtual.toFixed(2)}`;
+                setTimeout(() => { if(!detailBox.classList.contains('hidden')) finishPayment(); }, 4000);
+            } 
+            else if (method === 'credito') {
+                creditoDetails.classList.remove('hidden');
+                generateInstallmentsGrid(totalAtual);
+            } 
+            else if (method === 'debito') {
+                debitoDetails.classList.remove('hidden');
+                setTimeout(() => { if(!detailBox.classList.contains('hidden')) finishPayment(); }, 3000);
+            }
+            lucide.createIcons();
+        }
+
+        function generateInstallmentsGrid(total) {
+            const container = document.getElementById('installments-grid');
+            container.innerHTML = '';
+
+            for (let i = 1; i <= 5; i++) {
+                let valorParcela = total / i;
+                const button = document.createElement('button');
+                button.className = "p-4 border-2 border-purple-200 hover:border-indigo-600 rounded-xl bg-white text-center transition-all flex flex-col justify-center items-center shadow-sm";
+                button.onclick = () => {
+                    button.classList.add('bg-purple-50', 'border-indigo-600');
+                    setTimeout(() => finishPayment(), 1500);
+                };
+                button.innerHTML = `
+                    <span class="font-bold text-gray-800 text-xl">${i}x</span>
+                    <span class="text-sm font-semibold text-indigo-600">R$ ${valorParcela.toFixed(2)}</span>
+                `;
+                container.appendChild(button);
+            }
+        }
+
+        function finishPayment() {
+            document.getElementById('success-cpf-view').innerText = hasCpf ? cpfValue : "Não inserido";
+            changeStep(3, 4);
+        }
+
+        function resetSystem() {
+            cart = [];
+            hasCpf = false;
+            cpfValue = "";
+            isDiscountApplied = false;
+            document.getElementById('cpf-field').value = "";
+            document.getElementById('header-info').classList.add('hidden');
+            document.getElementById('product-code').value = "";
+            document.getElementById('coupon-input').value = "";
+            selectCpfOption(false);
+            renderCart();
+            changeStep(4, 1);
+        }
+    </script>
+</body>
+</html>
